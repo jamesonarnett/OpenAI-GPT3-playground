@@ -45,10 +45,10 @@ export default function Home() {
 
       <main className={styles.main}>
         <div className={styles.titleDiv}>
-          <h1 className={styles.title}>Hello</h1>
+          <h1 className={styles.title}>Its like a genie, but better</h1>
         </div>
         <div className={styles.inputDiv}>
-          <p className={styles.description}>Type in a prompt</p>
+          <p className={styles.description}>Type in a prompt - anything!</p>
           <input
             value={value}
             onChange={handleInput}

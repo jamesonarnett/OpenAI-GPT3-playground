@@ -6,7 +6,7 @@ import styles from "../styles/Home.module.scss";
 export default function Home() {
   const [value, setValue] = useState<string>("");
   const [prompt, setPrompt] = useState<string>("");
-  const [completion, setCompletion] = useState<string>("");
+  const [output, setOutput] = useState<string>("");
 
   const handleInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -16,8 +16,8 @@ export default function Home() {
     async (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter") {
         setPrompt(value);
-        setCompletion("Loading...");
-        const response = await fetch("/api/hello", {
+        setOutput("Loading...");
+        const response = await fetch("/api/prompt", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -26,7 +26,7 @@ export default function Home() {
         });
         const data = await response.json();
         setValue("");
-        setCompletion(data.result.choices[0].text);
+        setOutput(data.result.choices[0].text);
       }
     },
     [value]
@@ -45,7 +45,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <div className={styles.titleDiv}>
-          <h1 className={styles.title}>Its like a genie, but better</h1>
+          <h1 className={styles.title}>God Mode</h1>
         </div>
         <div className={styles.inputDiv}>
           <p className={styles.description}>Type in a prompt - anything!</p>
@@ -58,10 +58,13 @@ export default function Home() {
             Prompt: <span>{prompt}</span>
           </div>
           <div>
-            Completion:{" "}
+            Output:{" "}
             <span>
-              {completion.split("\n").map((item) => (
-                <>{item}</>
+              {output.split("\n").map((item) => (
+                <>
+                  {item}
+                  <br />
+                </>
               ))}
             </span>
           </div>

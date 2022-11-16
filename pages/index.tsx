@@ -7,6 +7,9 @@ export default function Home() {
   const [value, setValue] = useState<string>("");
   const [prompt, setPrompt] = useState<string>("");
   const [output, setOutput] = useState<string>("");
+  const [image, setImage] = useState<string>("");
+  const [imageLoading, setImageLoading] = useState<boolean>(true);
+  const [imageText, setImageText] = useState<string>("");
   const [isYellow, setIsYellow] = useState<boolean>(false);
   const [year, setYear] = useState<number>(0);
 
@@ -24,6 +27,8 @@ export default function Home() {
         try {
           setPrompt(value);
           setOutput("Loading...");
+          setImageLoading(true);
+          setImageText("Loading Image...");
           const response = await fetch("/api/prompt", {
             method: "POST",
             headers: {
@@ -35,12 +40,28 @@ export default function Home() {
           setValue("");
           setIsYellow(true);
           setOutput(data.result.choices[0].text);
+
+          const imageRespose = await fetch("/api/image", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ prompt }),
+          });
+          const imageData = await imageRespose.json();
+
+          if (imageData) {
+            setImage(imageData.imageURL);
+            setImageLoading(false);
+          } else {
+            setImageText("No image found");
+          }
         } catch (error) {
           console.log(error);
         }
       }
     },
-    [value]
+    [value, prompt]
   );
 
   useEffect(() => {
@@ -74,7 +95,7 @@ export default function Home() {
           <div className={styles.promptDiv}>
             <div>
               <p>
-                Promt: <span>{prompt}</span>
+                Prompt: <span>{prompt}</span>
               </p>
             </div>
             <div>
@@ -83,20 +104,27 @@ export default function Home() {
                   Holy Wisdom:{" "}
                 </span>
                 <span>
-                  {output.split("\n").map((item) => (
-                    <>
+                  {output.split("\n").map((item, idx) => (
+                    <span key={idx}>
                       {item}
                       <br />
-                    </>
+                    </span>
                   ))}
                 </span>
               </p>
             </div>
           </div>
+          {imageLoading ? (
+            <div className={styles.imageDiv}>
+              <p>{imageText}</p>
+            </div>
+          ) : (
+            <div className={styles.imageDiv}>
+              <img width={512} height={512} src={image} alt="" />
+            </div>
+          )}
         </div>
-        <div className={styles.grid}></div>
       </main>
-
       <footer className={styles.footer}>
         <p>
           <a

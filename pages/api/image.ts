@@ -6,17 +6,20 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-const prompt = "an image of an orange alien with a blue hat and a red shirt.";
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const result = await openai.createImage({
-    prompt,
+    prompt: req.body.prompt,
     n: 1,
-    size: "1024x1024",
-    user: "davinci",
+    size: "512x512",
   });
-  res.status(200).json({ result: result.data });
+
+  if (!result) {
+    res.status(500).json({ error: "No image returned" });
+    console.error("No image returned");
+    return;
+  }
+  res.status(200).json({ imageURL: result.data.data[0].url });
 }

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useState, useCallback, useEffect } from "react";
-import styles from "../styles/Home.module.scss";
+import styles from "../styles/Home.module.css";
 
 export default function Home() {
   const [value, setValue] = useState<string>("");
@@ -57,6 +57,7 @@ export default function Home() {
             setImageText("No image found");
           }
         } catch (error) {
+          setImageText("Failed to retrieve image, try again?");
           console.log(error);
         }
       }
@@ -88,6 +89,7 @@ export default function Home() {
             The Lords answer awaits - ask anything!
           </p>
           <input
+            className={styles.input}
             value={value}
             onChange={handleInput}
             onKeyDown={handleKeyDown}

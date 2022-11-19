@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
 import { useState, useCallback, useEffect } from "react";
 import styles from "../styles/Home.module.css";
 
@@ -41,29 +40,36 @@ export default function Home() {
           setIsYellow(true);
           setOutput(data.result.choices[0].text);
 
-          const imageRespose = await fetch("/api/image", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ prompt }),
-          });
-          const imageData = await imageRespose.json();
-
-          if (imageData) {
-            setImage(imageData.imageURL);
-            setImageLoading(false);
-          } else {
-            setImageText("No image found");
-          }
-        } catch (error) {
-          setImageText("Failed to retrieve image, try again?");
-          console.log(error);
+          handleImage();
+        } catch (err) {
+          setOutput("Failed to retrieve completion, try again?");
+          console.log(err);
         }
       }
     },
     [value, prompt]
   );
+
+  const handleImage = useCallback(async () => {
+    try {
+      const imageRespose = await fetch("/api/image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt }),
+      });
+      const imageData = await imageRespose.json();
+
+      if (imageData) {
+        setImage(imageData.imageURL);
+        setImageLoading(false);
+      }
+    } catch (err) {
+      setImageText("Failed to retrieve image, try again?");
+      console.log(err);
+    }
+  }, [prompt]);
 
   useEffect(() => {
     handleYear();

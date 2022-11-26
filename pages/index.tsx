@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
@@ -16,41 +16,41 @@ export default function Home() {
     setYear(new Date().getFullYear());
   };
 
-  const handleInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
-  }, []);
+  };
 
-  const handleKeyDown = useCallback(
-    async (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter") {
-        try {
-          setPrompt(value);
-          setOutput("Loading...");
-          setImageLoading(true);
-          setImageText("Loading Image...");
-          const response = await fetch("/api/prompt", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ text: value }),
-          });
-          const data = await response.json();
-          setValue("");
-          setIsYellow(true);
-          setOutput(data.result.choices[0].text);
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      try {
+        setPrompt(value);
+        setOutput("Loading...");
+        setImageLoading(true);
+        setImageText("Loading Image...");
+        const response = await fetch("/api/prompt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: value }),
+        });
+        const data = await response.json();
+        setValue("");
+        setIsYellow(true);
+        setOutput(data.result.choices[0].text);
 
-          handleImage();
-        } catch (err) {
-          setOutput("Failed to retrieve completion, try again?");
-          console.log(err);
-        }
+        await handleImage();
+      } catch (err) {
+        setOutput("Failed to retrieve completion, try again?");
+        console.log(err);
       }
-    },
-    [value, prompt]
-  );
+    }
+  };
 
-  const handleImage = useCallback(async () => {
+  const handleImage = async () => {
+    console.log(value);
+    console.log({ text: value });
+    console.log(prompt);
     try {
       const imageRespose = await fetch("/api/image", {
         method: "POST",
@@ -60,7 +60,7 @@ export default function Home() {
         body: JSON.stringify({ prompt }),
       });
       const imageData = await imageRespose.json();
-
+      console.log(imageData);
       if (imageData) {
         setImage(imageData.imageURL);
         setImageLoading(false);
@@ -69,7 +69,7 @@ export default function Home() {
       setImageText("Failed to retrieve image, try again?");
       console.log(err);
     }
-  }, [prompt]);
+  };
 
   useEffect(() => {
     handleYear();

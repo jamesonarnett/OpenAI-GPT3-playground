@@ -13,7 +13,7 @@ export default async function handler(
   const result = await openai.createImage({
     prompt: req.body.prompt,
     n: 1,
-    size: "512x512",
+    size: "256x256",
   });
 
   if (!result) {

@@ -19,5 +19,11 @@ export default async function handler(
     presence_penalty: 0,
     max_tokens: 256,
   });
+
+  if (!completion) {
+    res.status(500).json({ error: "No completion returned" });
+    console.error("No completion returned");
+    return;
+  }
   res.status(200).json({ result: completion.data });
 }

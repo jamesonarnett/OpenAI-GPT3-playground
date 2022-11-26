@@ -24,6 +24,7 @@ export default function Home() {
     if (e.key === "Enter") {
       try {
         setPrompt(value);
+        setIsYellow(false);
         setOutput("Loading...");
         setImageLoading(true);
         setImageText("Loading Image...");
@@ -67,6 +68,7 @@ export default function Home() {
         setImageLoading(false);
       }
     } catch (err) {
+      setImageLoading(false);
       setImageText("Failed to retrieve image, try again?");
       console.log(err);
     }

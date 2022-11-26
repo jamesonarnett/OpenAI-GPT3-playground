@@ -150,7 +150,10 @@ export default function Home() {
           >
             -Jam &#10084; <span style={{ marginLeft: ".3rem" }}>{year}</span>
           </a>
-          <p style={{ textAlign: "center" }}>why?</p>
+          <abbr title=""></abbr>
+          <p style={{ textAlign: "center" }} title="not?">
+            why
+          </p>
         </p>
       </footer>
     </div>

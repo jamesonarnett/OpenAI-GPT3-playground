@@ -35,12 +35,16 @@ export default function Home() {
           body: JSON.stringify({ text: value }),
         });
         const data = await response.json();
-        setValue("");
-        setIsYellow(true);
-        setOutput(data.result.choices[0].text);
 
-        await handleImage(value);
+        if (data) {
+          setIsYellow(true);
+          let completion = data.result.choices[0].text;
+          setOutput(completion);
+          await handleImage(`${value} ${completion}`);
+          setValue("");
+        }
       } catch (err) {
+        setImageLoading(false);
         setOutput("Failed to retrieve completion, try again?");
         console.log(err);
       }
@@ -48,9 +52,6 @@ export default function Home() {
   };
 
   const handleImage = async (prompt: string) => {
-    console.log(value);
-    console.log({ text: value });
-    console.log(prompt);
     try {
       const imageRespose = await fetch("/api/image", {
         method: "POST",
@@ -60,6 +61,7 @@ export default function Home() {
         body: JSON.stringify({ prompt }),
       });
       const imageData = await imageRespose.json();
+
       if (imageData) {
         setImage(imageData.imageURL);
         setImageLoading(false);
@@ -98,6 +100,7 @@ export default function Home() {
             value={value}
             onChange={handleInput}
             onKeyDown={handleKeyDown}
+            ref={(input) => input && input.focus()}
           />
           <div className={styles.promptDiv}>
             <div>
@@ -123,7 +126,7 @@ export default function Home() {
           </div>
           {imageLoading ? (
             <div className={styles.imageDiv}>
-              <p>{imageText}</p>
+              <p className={`${imageLoading && styles.blink}`}>{imageText}</p>
             </div>
           ) : (
             <div className={styles.imageDiv}>

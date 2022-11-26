@@ -89,3 +89,15 @@
   align-items: center;
   flex-grow: 1;
 }
+
+/* ANIMATIONS */
+
+.blink {
+  animation: blinky 1.5s linear infinite;
+}
+
+@keyframes blinky {
+  50% {
+    opacity: 0;
+  }
+}

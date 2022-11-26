@@ -39,7 +39,7 @@ export default function Home() {
         setIsYellow(true);
         setOutput(data.result.choices[0].text);
 
-        await handleImage();
+        await handleImage(value);
       } catch (err) {
         setOutput("Failed to retrieve completion, try again?");
         console.log(err);
@@ -47,7 +47,7 @@ export default function Home() {
     }
   };
 
-  const handleImage = async () => {
+  const handleImage = async (prompt: string) => {
     console.log(value);
     console.log({ text: value });
     console.log(prompt);
@@ -60,7 +60,6 @@ export default function Home() {
         body: JSON.stringify({ prompt }),
       });
       const imageData = await imageRespose.json();
-      console.log(imageData);
       if (imageData) {
         setImage(imageData.imageURL);
         setImageLoading(false);

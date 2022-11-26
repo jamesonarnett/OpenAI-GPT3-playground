@@ -89,7 +89,7 @@ export default function Home() {
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
-        ></meta>
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -150,6 +150,7 @@ export default function Home() {
           >
             -Jam &#10084; <span style={{ marginLeft: ".3rem" }}>{year}</span>
           </a>
+          <p style={{ textAlign: "center" }}>why?</p>
         </p>
       </footer>
     </div>

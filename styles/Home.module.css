@@ -8,7 +8,7 @@
 
 .main {
   min-height: 100vh;
-  padding: 4rem 0;
+  padding: 2rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -16,7 +16,7 @@
 }
 
 .titleDiv {
-  margin: 1rem 0;
+  margin: 0.5rem 0;
   text-align: center;
   border-bottom: 1px solid #eaeaea;
   width: 96vw;
@@ -60,10 +60,12 @@
 
 .promptDiv {
   width: 100%;
+  font-size: 1.2rem;
 }
 
 .description {
   font-size: 1.2rem;
+  text-align: center;
 }
 
 .footer {
@@ -100,4 +102,13 @@
   50% {
     opacity: 0;
   }
+}
+
+@media only screen and (min-width: 1199.99px) {
+}
+
+@media only screen and (max-width: 991.98px) {
+}
+
+@media only screen and (max-width: 432px) {
 }
